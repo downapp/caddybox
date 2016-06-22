@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+setcap cap_net_bind_service=+ep ./rootfs/bin/caddy #Doesn't work. Can't bind low ports.
+
 # Start the build with the caddybox root file system.
 acbuild --debug begin ./rootfs
 
@@ -29,6 +31,8 @@ acbuild --debug port add http-alt tcp 2015
 #acbuild --debug mount add caddyfile /Caddyfile
 #acbuild --debug mount add html /var/www/html
 acbuild --debug mount add dotcaddy /root/.caddy
+
+acbuild --debug set-user 22015
 
 # How to execute caddy
 acbuild --debug set-exec -- /bin/caddy -root /var/www/html
